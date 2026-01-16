@@ -1,0 +1,27 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+
+int main(void) {
+  char *line = NULL;
+  size_t len = 0;
+
+  while (1) {
+    printf("Enter programs to run.\n> ");
+    fflush(stdout);
+
+    ssize_t nread = getline(&line, &len, stdin);
+    if (nread == -1) {
+      break;
+    }
+    
+    if (line[nread - 1] == '\n') {
+    line[nread - 1] = '\0';
+    }
+  
+    printf("You typed: %s", line);
+  }
+
+  free(line);
+  return 0;
+}
