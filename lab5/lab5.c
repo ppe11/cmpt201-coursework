@@ -92,31 +92,37 @@ int main(void) {
 
   return 0;
 }
-
 /*
 ============================================================
-Part 2: Coalescing Contiguous Free Blocks (Pseudo-code)
+Part 2: Coalescing Contiguous Free Blocks
 ============================================================
 
-Assume:
-- free list is already coalesced
-- a single new block "new_block" is being freed
+Assumptions:
+- The free list is already coalesced.
+- A single newly freed block "new_block" is given.
+- The free list is sorted by memory address.
 
 Algorithm:
 
-1. Find correct position in free list (sorted by memory address).
+1. Traverse the free list to find the correct position
+   where new_block should be inserted (keep list sorted by address).
+
 2. Insert new_block into the linked list.
 
-3. Check if previous block is adjacent:
-   if (previous_end_address == new_block_start_address)
-       previous->size += new_block->size
-       previous->next = new_block->next
-       new_block = previous
+3. Check if the block BEFORE new_block is contiguous:
+      if (address_of_previous_block + previous_block->size
+          == address_of_new_block)
+      then:
+          previous_block->size += new_block->size
+          previous_block->next = new_block->next
+          new_block = previous_block
 
-4. Check if next block is adjacent:
-   if (new_block_end_address == next_start_address)
-       new_block->size += next_block->size
-       new_block->next = next_block->next
+4. Check if the block AFTER new_block is contiguous:
+      if (address_of_new_block + new_block->size
+          == address_of_next_block)
+      then:
+          new_block->size += next_block->size
+          new_block->next = next_block->next
 
 5. Done.
 */
